@@ -1,22 +1,28 @@
-import {test, expect} from '@playwright/test';
+import {test , expect} from '@playwright/test'; 
+import * as dotenv from 'dotenv';
+dotenv.config(); 
 
-test('homepage loads', async ({page}) =>{
-    await page.goto('https://lightmenu.app');
-    await expect(page).toHaveTitle(/.+/);
+const email = process.env.TEST_EMAIL!;
+const password = process.env.TEST_PASSWORD!;
+
+
+test ('user can login' , async ({page}) => {
+    await page.goto('https://lightmenu.app/login');
+    await page.locator('input[type="email"]').fill(email);
+    await page.locator('input[type="password"]').fill(password);
+    await page.locator('button[type="submit"]').click();
+    await expect(page).toHaveURL(/dashboard/);
 });
 
-test ('page is visible', async ({page}) =>{
-    await page.goto('https://lightmenu.app');
-    await expect(page.locator('body')).toBeVisible();
+test ('login page has email and password fields' ,async ({page}) => {
+    await page.goto('https://lightmenu.app/login');
+    await expect(page.locator('input[type="email"]')).toBeVisible();
+    await expect(page.locator('input[type="password"]')).toBeVisible(); 
 });
-
-test ('sign in is visible', async ({page}) => {
-    await page.goto('https://lightmenu.app');
-    await expect(page.locator('text=Sign in')).toBeVisible();
+test ('login page fails with the wrong password' , async ({page}) => {
+    await page.goto('https://lightmenu.app/login');
+    await page.locator('input[type="email"]').fill(email);
+    await page.locator('input[type="password"]').fill('pandorasbox12345');
+    await page.locator('button[type="submit"]').click();
+    await expect(page).not.toHaveURL(/dashboard/);
 });
-
-test ('sign up button is visible' , async ({page}) => {
-    await page.goto('https://lightmenu.app');
-    await expect(page.locator('text=Get started free').first()).toBeVisible();
-});
-
