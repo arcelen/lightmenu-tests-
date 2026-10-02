@@ -1,8 +1,0 @@
-{
-  "default": {
-    "require": ["features/step-definitions/**/*.ts"],
-    "requireModule": ["@swc-node/register"],
-    "format": ["progress-bar"],
-    "paths": ["features/**/*.feature"]
-  }
-}
