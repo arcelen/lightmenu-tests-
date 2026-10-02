@@ -1,9 +1,16 @@
 {
   "name": "lightmenu-tests",
   "version": "1.0.0",
-  "description": "",
+  "description": "End-to-end and API test suite for the LightMenu restaurant platform",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:saucedemo": "playwright test tests/saucedemo.spec.ts",
+    "report": "playwright show-report",
+    "bdd": "cucumber-js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

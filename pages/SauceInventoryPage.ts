@@ -3,7 +3,7 @@ import { Page } from '@playwright/test';
 export class SauceInventoryPage {
     constructor(private page: Page) {}
 
-    async addItemToCart(itemDataTest: String) {
+    async addItemToCart(itemDataTest: string) {
         await this.page.locator(`[data-test="${itemDataTest}"]`).click();
     }
 
