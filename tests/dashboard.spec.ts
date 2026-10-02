@@ -1,14 +1,10 @@
 import { test, expect } from '@playwright/test';
-import * as dotenv from 'dotenv';
-dotenv.config();
-
-const email = process.env.TEST_EMAIL!;
-const password = process.env.TEST_PASSWORD!;
+import { TEST_EMAIL, TEST_PASSWORD } from '../config/env';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('https://www.lightmenu.app/login');
-  await page.locator('input[type="email"]').fill(email);
-  await page.locator('input[type="password"]').fill(password);
+  await page.goto('/login');
+  await page.locator('input[type="email"]').fill(TEST_EMAIL);
+  await page.locator('input[type="password"]').fill(TEST_PASSWORD);
   await page.locator('button[type="submit"]').click();
   await page.waitForTimeout(10000);
 });
