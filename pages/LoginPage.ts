@@ -4,7 +4,7 @@ export class LoginPage {
   constructor(private page: Page) {}
 
   async goto() {
-    await this.page.goto('https://www.lightmenu.app/login');
+    await this.page.goto('/login');
   }
 
   async login(email: string, password: string) {
