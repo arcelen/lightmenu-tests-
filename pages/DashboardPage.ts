@@ -4,11 +4,14 @@ export class DashboardPage {
   readonly heading: Locator;
   readonly newSystemButton: Locator;
   readonly restaurantTitles: Locator;
+  readonly viewButtons: Locator;
 
   constructor(private page: Page) {
     this.heading = page.getByRole('heading', { name: 'My Systems' });
     this.newSystemButton = page.getByRole('button', { name: 'New System' });
     this.restaurantTitles = page.getByRole('heading', { level: 3 });
+    // exact: otherwise this also matches the 'Grid View' and 'List View' toggles
+    this.viewButtons = page.getByRole('button', { name: 'View', exact: true });
   }
 
   async goto() {

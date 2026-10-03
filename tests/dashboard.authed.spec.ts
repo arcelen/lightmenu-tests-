@@ -20,4 +20,12 @@ test.describe('dashboard', () => {
   test('lists at least one restaurant', async () => {
     await expect(dashboard.restaurantTitles.first()).toBeVisible();
   });
+
+  test('View opens the restaurant public page in a new tab', async ({ page }) => {
+    const [publicPage] = await Promise.all([
+      page.waitForEvent('popup'),
+      dashboard.viewButtons.first().click(),
+    ]);
+    await expect(publicPage).toHaveURL(/\/menu\?slug=/);
+  });
 });
