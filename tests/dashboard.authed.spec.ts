@@ -1,16 +1,23 @@
 import { test, expect } from '@playwright/test';
+import { DashboardPage } from '../pages/DashboardPage';
 
-test('dashboard shows My Sites heading', async ({ page }) => {
-  await page.goto('/dashboard');
-  await expect(page.locator('text=My Sites')).toBeVisible();
-});
+test.describe('dashboard', () => {
+  let dashboard: DashboardPage;
 
-test('Create New Site button is visible', async ({ page }) => {
-  await page.goto('/dashboard');
-  await expect(page.locator('text=Create New Site')).toBeVisible();
-});
+  test.beforeEach(async ({ page }) => {
+    dashboard = new DashboardPage(page);
+    await dashboard.goto();
+  });
 
-test('restaurant cards are visible', async ({ page }) => {
-  await page.goto('/dashboard');
-  await expect(page.getByText('COFFEES', { exact: true }).nth(1)).toBeVisible();
+  test('shows the My Systems heading', async () => {
+    await expect(dashboard.heading).toBeVisible();
+  });
+
+  test('has a New System button', async () => {
+    await expect(dashboard.newSystemButton).toBeVisible();
+  });
+
+  test('lists at least one restaurant', async () => {
+    await expect(dashboard.restaurantTitles.first()).toBeVisible();
+  });
 });
