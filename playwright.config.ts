@@ -1,12 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import { AUTH_FILE } from './config/paths';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -21,59 +14,40 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  /* Never block the terminal serving the report; open it with `npm run report`. */
+  reporter: [['html', { open: 'never' }]],
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
     baseURL: 'https://www.lightmenu.app',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
 
-  /* Configure projects for major browsers */
   projects: [
+    /* Logs in once and saves the session to AUTH_FILE. */
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+    },
+
+    /* Logged-out tests (public pages, the login form, other sites).
+       They never wait on setup, so a login problem cannot block them. */
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: /.*\.authed\.spec\.ts/,
     },
 
+    /* Tests named *.authed.spec.ts start already logged in. */
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: 'chromium-authed',
+      use: { ...devices['Desktop Chrome'], storageState: AUTH_FILE },
+      testMatch: /.*\.authed\.spec\.ts/,
+      dependencies: ['setup'],
     },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    // Cross-browser comes later, once the suite is stable on one browser.
+    // { name: 'firefox', use: { ...devices['Desktop Firefox'] }, testIgnore: /.*\.authed\.spec\.ts/ },
+    // { name: 'webkit', use: { ...devices['Desktop Safari'] }, testIgnore: /.*\.authed\.spec\.ts/ },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
