@@ -1,17 +1,20 @@
-import { Page } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class DashboardPage {
-  constructor(private page: Page) {}
+  readonly heading: Locator;
+  readonly newSystemButton: Locator;
+  readonly restaurantTitles: Locator;
 
-  async waitForLoad() {
-    await this.page.waitForTimeout(10000);
+  constructor(private page: Page) {
+    this.heading = page.getByRole('heading', { name: 'My Systems' });
+    this.newSystemButton = page.getByRole('button', { name: 'New System' });
+    this.restaurantTitles = page.getByRole('heading', { level: 3 });
   }
 
-  async isMySitesVisible() {
-    return this.page.getByText('My Sites').isVisible();
-  }
-
-  async isCreateNewSiteVisible() {
-    return this.page.getByText('Create New Site').isVisible();
+  async goto() {
+    await this.page.goto('/dashboard');
+    // The dashboard needs ~6s to render, longer than the default 5s expect
+    // timeout. Wait for it explicitly instead of sleeping.
+    await expect(this.heading).toBeVisible({ timeout: 20000 });
   }
 }
