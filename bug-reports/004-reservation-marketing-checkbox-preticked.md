@@ -1,25 +1,30 @@
 # Bug report 004 - Marketing opt-in is pre-ticked on the reservation form
 
 **App** lightmenu.app
-**Date** 05/10/2026
-**Severity** Moderate
+**Date** 2026-10-05
+**Environment** Windows 11, Chromium 149 (Playwright)
+**Severity** Moderate - no functional impact, but a legal-risk issue
 **Status** Open
 
 ## Summary
-The news letter offers and mareting button in the reservation links is pre clicked. this is both technical and legal problem because sometimes a clients wouldn't want to have it ticked. having it pre ticket make it seem madatory.
+On the reservation form, the checkbox "Email me occasional offers and news from Restaurante El Sueño" is ticked by default, so customers who don't change it are signed up for marketing emails.
 
 ## Steps to reproduce
 1. Open a private window.
-2. Go to https://www.lightmenu.app/reservation/restaurannt-name
+2. Go to https://www.lightmenu.app/reservation/restaurante-el-sueno
 3. Look at the checkbox above "Confirm booking".
 
 ## Expected
-The button to be unticked and to have another tick button which is terms and conditions. 
+The checkbox is unticked by default. The customer ticks it to opt in.
+
 ## Actual
-This defect is present in every reservation link.
+Checked on 2026-10-05 on four restaurants (restaurante-el-sueno, edlala-restaurant, arcelen, vinitus): the box is ticked by default on all four. No link to a privacy policy, terms or unsubscribe information appears on the form. The box can be unticked, but it comes back ticked after a page reload.
 
 ## Impact
-Lightmenu and the user are both effected which could lead to a legal problem that may not meet with the EU consent rules  (GDPR, Rectical 32).
+Customers can be signed up for marketing emails they didn't choose. The pre-ticked box may not meet EU consent rules (GDPR, Recital 32), which could lead to complaints against the restaurants, who are responsible for that consent.
+
+## Suggestion
+Add a separate, mandatory checkbox for the terms and conditions.
 
 ## Evidence
 ![checkbox](004-checkbox.png)

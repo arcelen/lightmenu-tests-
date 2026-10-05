@@ -17,11 +17,16 @@ test.describe('reservation page',() => { let reservation: ReservationPage;
         await expect(reservation.surnameInput).toBeVisible();
         await expect(reservation.emailInput).toBeVisible();
         await expect(reservation.guestsInput).toBeVisible();
+        await expect(reservation.marketingCheckbox).toBeVisible();
         
 
     });
 
     test('cannot confirm an empty form', async () => {
         await expect(reservation.confirmButton).toBeDisabled();
+    });
+
+    test.fail('marketing opt-in should start unticked',async () => {
+        await expect(reservation.marketingCheckbox).not.toBeChecked();
     });
 });
