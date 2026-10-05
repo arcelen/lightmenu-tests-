@@ -7,6 +7,7 @@ export class ReservationPage {
     readonly emailInput: Locator;
     readonly guestsInput: Locator;
     readonly confirmButton: Locator;
+    readonly marketingCheckbox: Locator;
     
     constructor(private page: Page){
         this.heading = page.getByRole('heading', { level: 1});
@@ -15,7 +16,7 @@ export class ReservationPage {
         this.emailInput = page.getByRole('textbox', {name:'Email'});
         this.guestsInput = page.getByRole('spinbutton', {name: 'Guests'});
         this.confirmButton = page.getByRole('button', {name: 'Confirm booking'});
-
+        this.marketingCheckbox = page.getByRole('checkbox', {name: 'offers and news'});
     }
 
     async goto(slug: string){
