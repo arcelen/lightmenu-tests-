@@ -30,12 +30,20 @@ export default defineConfig({
       testMatch: /.*\.setup\.ts/,
     },
 
+    /* API tests hit Supabase/REST directly via the `request` fixture.
+       No browser needed, so they get their own project instead of running
+       under chromium's page/device setup. */
+    {
+      name: 'api',
+      testMatch: /.*\.api\.spec\.ts/,
+    },
+
     /* Logged-out tests (public pages, the login form, other sites).
        They never wait on setup, so a login problem cannot block them. */
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: /.*\.authed\.spec\.ts/,
+      testIgnore: [/.*\.authed\.spec\.ts/, /.*\.api\.spec\.ts/],
     },
 
     /* Tests named *.authed.spec.ts start already logged in. */

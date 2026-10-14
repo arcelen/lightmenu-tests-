@@ -15,3 +15,5 @@ function requireEnv(name: string): string {
 
 export const TEST_EMAIL = requireEnv('TEST_EMAIL');
 export const TEST_PASSWORD = requireEnv('TEST_PASSWORD');
+export const SUPABASE_URL = requireEnv('SUPABASE_URL');
+export const SUPABASE_ANON_KEY = requireEnv('SUPABASE_ANON_KEY');
