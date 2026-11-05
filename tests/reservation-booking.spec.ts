@@ -13,11 +13,14 @@ test.describe('reservation booking',() => {
 
     test('a customer can book a table', async({page}) => {
         const Surname = `QA-${Date.now()}`;
+        const d = new Date();
+        d.setDate(d.getDate()+ 7);
+        const date = d.toISOString().slice(0,10);
         await reservation.firstNameInput.fill('Arcelen');
         await reservation.surnameInput.fill(Surname);
         await reservation.emailInput.fill('arcelen.apk@gmail.com');
         await reservation.guestsInput.fill('3');
-        await reservation.dateInput.fill('2026-11-06');
+        await reservation.dateInput.fill(date);
         await reservation.timeInput.fill('19:45');
         await reservation.confirmButton.click();
         await expect(page.getByText('Your table at 365 Cafe is reserved for')).toBeVisible();
