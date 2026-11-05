@@ -16,10 +16,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install --with-deps chromium
     - name: Run Playwright tests
-      run: npx playwright test tests/saucedemo.spec.ts tests/homepage.spec.ts
-    - uses: actions/upload-artifact@v4
+      run: npx playwright test --grep-invert "@booking"
+            env:
+        TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
       if: ${{ !cancelled() }}
       with:
         name: playwright-report

@@ -11,7 +11,7 @@ test.describe('reservation booking',() => {
         await reservation.goto(SLUG);
     });
 
-    test('a customer can book a table', async({page}) => {
+    test('a customer can book a table @booking', async({page}) => {
         const Surname = `QA-${Date.now()}`;
         const d = new Date();
         d.setDate(d.getDate()+ 7);
