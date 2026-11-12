@@ -15,4 +15,10 @@ test ('create and delete a menu item' ,async ({page}) => {
 
     await page.getByRole('button', { name: 'Uncategorized' }).click();
     await expect(page.getByText('burger').first()).toBeVisible();
+
+    const deleteButtons = page.getByRole('button', { name: 'Delete item' });
+    const countBefore = await deleteButtons.count();
+    page.once('dialog', (dialog) => dialog.accept());
+    await deleteButtons.last().click();
+    await expect(deleteButtons).toHaveCount(countBefore - 1);
 });
