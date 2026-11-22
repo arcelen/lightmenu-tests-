@@ -15,7 +15,7 @@ export class LoginPage {
   }
 
   async goto() {
-    await this.page.goto('/login');
+    await this.page.goto('/login', { waitUntil:'domcontentloaded'});
   }
 
   /** Submits the form. Does not wait: callers assert the outcome they expect. */
